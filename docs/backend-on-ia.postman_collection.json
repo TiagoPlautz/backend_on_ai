@@ -1,0 +1,425 @@
+{
+  "info": {
+    "_postman_id": "4b272f73-346c-4544-aa80-3f0bac973947",
+    "name": "Backend On IA",
+    "description": "Coleção para testar o backend Spring Boot + LangChain4j do projeto Backend On IA.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "categoryId",
+      "value": ""
+    },
+    {
+      "key": "userId",
+      "value": ""
+    },
+    {
+      "key": "templateId",
+      "value": ""
+    },
+    {
+      "key": "documentId",
+      "value": ""
+    },
+    {
+      "key": "sessionId",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "GET /me",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/me"
+          }
+        },
+        {
+          "name": "GET /dashboard/home",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/dashboard/home"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Categories",
+      "item": [
+        {
+          "name": "GET /categories",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/categories"
+          }
+        },
+        {
+          "name": "POST /categories",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Operações\",\n  \"sector\": \"Backoffice\",\n  \"summary\": \"Categoria criada pelo Postman\"\n}"
+            },
+            "url": "{{baseUrl}}/categories"
+          }
+        },
+        {
+          "name": "PATCH /categories/{id}",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Operações Atualizada\",\n  \"sector\": \"Backoffice\",\n  \"summary\": \"Resumo alterado\"\n}"
+            },
+            "url": "{{baseUrl}}/categories/{{categoryId}}"
+          }
+        },
+        {
+          "name": "PATCH /categories/{id}/status",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"isActive\": true\n}"
+            },
+            "url": "{{baseUrl}}/categories/{{categoryId}}/status"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "GET /users",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/users"
+          }
+        },
+        {
+          "name": "POST /users",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Novo Usuário\",\n  \"email\": \"novo.usuario@empresa.com\",\n  \"role\": \"EDITOR\",\n  \"initials\": \"NU\",\n  \"categoryId\": \"{{categoryId}}\"\n}"
+            },
+            "url": "{{baseUrl}}/users"
+          }
+        },
+        {
+          "name": "PATCH /users/{id}",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Usuário Atualizado\",\n  \"email\": \"atualizado@empresa.com\",\n  \"role\": \"VIEWER\",\n  \"initials\": \"UA\",\n  \"categoryId\": \"{{categoryId}}\"\n}"
+            },
+            "url": "{{baseUrl}}/users/{{userId}}"
+          }
+        },
+        {
+          "name": "PATCH /users/{id}/status",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"isActive\": true\n}"
+            },
+            "url": "{{baseUrl}}/users/{{userId}}/status"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Templates",
+      "item": [
+        {
+          "name": "GET /templates",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/templates"
+          }
+        },
+        {
+          "name": "POST /templates",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-Admin",
+                "value": "true"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Template API\",\n  \"fileType\": \"md\",\n  \"scope\": \"Escopo de teste\"\n}"
+            },
+            "url": "{{baseUrl}}/templates"
+          }
+        },
+        {
+          "name": "PATCH /templates/{id}",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-Admin",
+                "value": "true"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Template API Atualizado\",\n  \"fileType\": \"docx\",\n  \"scope\": \"Escopo alterado\"\n}"
+            },
+            "url": "{{baseUrl}}/templates/{{templateId}}"
+          }
+        },
+        {
+          "name": "DELETE /templates/{id}",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "X-Admin",
+                "value": "true"
+              }
+            ],
+            "url": "{{baseUrl}}/templates/{{templateId}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Documents",
+      "item": [
+        {
+          "name": "GET /documents",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/documents"
+          }
+        },
+        {
+          "name": "GET /documents/{id}",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/documents/{{documentId}}"
+          }
+        },
+        {
+          "name": "POST /documents",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Documento criado pelo Postman\",\n  \"categoryId\": \"{{categoryId}}\",\n  \"templateId\": \"{{templateId}}\",\n  \"sourceType\": \"CHAT\",\n  \"content\": \"Conteúdo inicial\"\n}"
+            },
+            "url": "{{baseUrl}}/documents"
+          }
+        },
+        {
+          "name": "PATCH /documents/{id}",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Documento atualizado\",\n  \"categoryId\": \"{{categoryId}}\",\n  \"templateId\": \"{{templateId}}\",\n  \"sourceType\": \"URL\",\n  \"content\": \"Conteúdo alterado\"\n}"
+            },
+            "url": "{{baseUrl}}/documents/{{documentId}}"
+          }
+        },
+        {
+          "name": "GET /documents/recent-created",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/documents/recent-created"
+          }
+        },
+        {
+          "name": "GET /documents/recent-updated",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/documents/recent-updated"
+          }
+        },
+        {
+          "name": "GET /documents/metrics",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/documents/metrics"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Chat",
+      "item": [
+        {
+          "name": "GET /chat/sessions?mode=CREATE",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/chat/sessions?mode=CREATE"
+          }
+        },
+        {
+          "name": "POST /chat/sessions",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"mode\": \"CREATE\",\n  \"title\": \"Nova documentação\",\n  \"documentId\": null\n}"
+            },
+            "url": "{{baseUrl}}/chat/sessions"
+          }
+        },
+        {
+          "name": "GET /chat/sessions/{id}/messages",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/chat/sessions/{{sessionId}}/messages"
+          }
+        },
+        {
+          "name": "POST /chat/sessions/{id}/messages",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"content\": \"Crie uma documentação de onboarding para novos colaboradores.\"\n}"
+            },
+            "url": "{{baseUrl}}/chat/sessions/{{sessionId}}/messages"
+          }
+        },
+        {
+          "name": "DELETE /chat/sessions/{id}",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/chat/sessions/{{sessionId}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Knowledge",
+      "item": [
+        {
+          "name": "POST /knowledge/urls",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Documentação a partir de URL\",\n  \"url\": \"https://exemplo.com/doc\",\n  \"categoryId\": \"{{categoryId}}\",\n  \"templateId\": \"{{templateId}}\"\n}"
+            },
+            "url": "{{baseUrl}}/knowledge/urls"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Swagger",
+      "item": [
+        {
+          "name": "GET /v3/api-docs",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v3/api-docs"
+          }
+        },
+        {
+          "name": "GET /swagger-ui.html",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/swagger-ui.html"
+          }
+        }
+      ]
+    }
+  ]
+}

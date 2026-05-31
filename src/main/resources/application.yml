@@ -1,0 +1,46 @@
+spring:
+  application:
+    name: backend-on-ia
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/on_ai_database
+    username: postgres
+    password: 123456
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: true
+
+server:
+  port: 8080
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: method
+    tagsSorter: alpha
+
+app:
+  cors:
+    allowed-origins: http://localhost:5173,http://127.0.0.1:5173
+  ai:
+    provider: anthropic
+    model-name: ${ANTHROPIC_MODEL:claude-sonnet-4-20250514}
+    temperature: 0.2
+    api-key: ${ANTHROPIC_API_KEY:}
+  knowledge-base:
+    base-dir: knowledge-base

@@ -1,0 +1,296 @@
+openapi: 3.0.3
+info:
+  title: Backend On IA API
+  version: v1
+  description: API REST para categorias, usuários, templates, documentos, chats e ingestão de conhecimento.
+servers:
+  - url: http://localhost:8080
+paths:
+  /me:
+    get:
+      tags: [Auth]
+      summary: Retorna o usuário logado mockado
+      responses:
+        '200':
+          description: OK
+  /dashboard/home:
+    get:
+      tags: [Dashboard]
+      summary: Retorna dados agregados da home
+      responses:
+        '200':
+          description: OK
+  /categories:
+    get:
+      tags: [Categories]
+      summary: Lista categorias
+      responses:
+        '200':
+          description: OK
+    post:
+      tags: [Categories]
+      summary: Cria categoria
+      responses:
+        '200':
+          description: OK
+  /categories/{id}:
+    patch:
+      tags: [Categories]
+      summary: Atualiza categoria
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: OK
+  /categories/{id}/status:
+    patch:
+      tags: [Categories]
+      summary: Atualiza status da categoria
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: OK
+  /users:
+    get:
+      tags: [Users]
+      summary: Lista usuários
+      responses:
+        '200':
+          description: OK
+    post:
+      tags: [Users]
+      summary: Cria usuário
+      responses:
+        '200':
+          description: OK
+  /users/{id}:
+    patch:
+      tags: [Users]
+      summary: Atualiza usuário
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: OK
+  /users/{id}/status:
+    patch:
+      tags: [Users]
+      summary: Atualiza status do usuário
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: OK
+  /templates:
+    get:
+      tags: [Templates]
+      summary: Lista templates
+      responses:
+        '200':
+          description: OK
+    post:
+      tags: [Templates]
+      summary: Cria template
+      parameters:
+        - in: header
+          name: X-Admin
+          required: false
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: OK
+  /templates/{id}:
+    patch:
+      tags: [Templates]
+      summary: Atualiza template
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - in: header
+          name: X-Admin
+          required: false
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: OK
+    delete:
+      tags: [Templates]
+      summary: Remove template
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - in: header
+          name: X-Admin
+          required: false
+          schema:
+            type: boolean
+      responses:
+        '204':
+          description: No Content
+  /documents:
+    get:
+      tags: [Documents]
+      summary: Lista documentos com filtros
+      responses:
+        '200':
+          description: OK
+    post:
+      tags: [Documents]
+      summary: Cria documento
+      responses:
+        '200':
+          description: OK
+  /documents/{id}:
+    get:
+      tags: [Documents]
+      summary: Busca documento por id
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: OK
+    patch:
+      tags: [Documents]
+      summary: Atualiza documento
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: OK
+  /documents/recent-created:
+    get:
+      tags: [Documents]
+      summary: Lista documentos criados recentemente
+      responses:
+        '200':
+          description: OK
+  /documents/recent-updated:
+    get:
+      tags: [Documents]
+      summary: Lista documentos atualizados recentemente
+      responses:
+        '200':
+          description: OK
+  /documents/metrics:
+    get:
+      tags: [Documents]
+      summary: Retorna métricas dos documentos
+      responses:
+        '200':
+          description: OK
+  /chat/sessions:
+    get:
+      tags: [Chat]
+      summary: Lista sessões por modo
+      responses:
+        '200':
+          description: OK
+    post:
+      tags: [Chat]
+      summary: Cria sessão de chat
+      responses:
+        '200':
+          description: OK
+  /chat/sessions/{id}/messages:
+    get:
+      tags: [Chat]
+      summary: Lista mensagens da sessão
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: OK
+    post:
+      tags: [Chat]
+      summary: Envia mensagem para a sessão
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: OK
+  /chat/sessions/{id}:
+    delete:
+      tags: [Chat]
+      summary: Remove sessão de chat
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: OK
+  /uploads/files:
+    post:
+      tags: [Knowledge]
+      summary: Upload de arquivos para ingestão
+      responses:
+        '200':
+          description: OK
+  /knowledge/urls:
+    post:
+      tags: [Knowledge]
+      summary: Cadastra uma URL na base de conhecimento
+      responses:
+        '200':
+          description: OK
+  /knowledge/audio/transcribe:
+    post:
+      tags: [Knowledge]
+      summary: Faz transcrição de áudio
+      responses:
+        '200':
+          description: OK
