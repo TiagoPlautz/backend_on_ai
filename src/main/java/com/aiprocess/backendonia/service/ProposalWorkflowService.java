@@ -97,6 +97,16 @@ public class ProposalWorkflowService {
         ProposalRecord proposal = proposalRepository.findById(request.id())
                 .orElseThrow(() -> new NotFoundException("Proposta não encontrada"));
 
+        if (proposal.getStatus() == ProposalStatus.APPROVED) {
+            return new WorkflowDtos.ApproveResponse(
+                    "approved",
+                    "A proposta já havia sido aprovada anteriormente.",
+                    toProposalDocumentResponse(proposal),
+                    proposal.getGeneratedFileName(),
+                    true
+            );
+        }
+
         String action = request.acao().trim().toUpperCase();
         if ("REJECT".equals(action) || "REJEITAR".equals(action)) {
             proposal.setStatus(ProposalStatus.REJECTED);
@@ -136,11 +146,8 @@ public class ProposalWorkflowService {
     }
 
     private void persistAsDocumentIfPossible(ProposalRecord proposal) {
-        List<CategoryDtos.CategoryResponse> categories = categoryService.list();
-        List<TemplateDtos.TemplateResponse> templates = templateService.list();
-        if (categories.isEmpty() || templates.isEmpty()) {
-            return;
-        }
+        CategoryDtos.CategoryResponse category = ensureCategoryForKnowledgeBase();
+        TemplateDtos.TemplateResponse template = ensureTemplateForKnowledgeBase();
 
         boolean alreadyExists = documentService.list(null, null, SourceType.CHAT, proposal.getTitle()).stream()
                 .anyMatch(document -> document.title().equalsIgnoreCase(proposal.getTitle()));
@@ -148,14 +155,38 @@ public class ProposalWorkflowService {
             return;
         }
 
-        UUID categoryId = categories.get(0).id();
-        UUID templateId = templates.get(0).id();
         documentService.create(new DocumentDtos.DocumentRequest(
                 proposal.getTitle(),
-                categoryId,
-                templateId,
+                category.id(),
+                template.id(),
                 SourceType.CHAT,
                 proposal.getContent()
+        ));
+    }
+
+    private CategoryDtos.CategoryResponse ensureCategoryForKnowledgeBase() {
+        List<CategoryDtos.CategoryResponse> categories = categoryService.list();
+        if (!categories.isEmpty()) {
+            return categories.get(0);
+        }
+
+        return categoryService.create(new CategoryDtos.CategoryRequest(
+                "Knowledge Base",
+                "Interno",
+                "Categoria padrão criada automaticamente para persistir documentos aprovados pela IA."
+        ));
+    }
+
+    private TemplateDtos.TemplateResponse ensureTemplateForKnowledgeBase() {
+        List<TemplateDtos.TemplateResponse> templates = templateService.list();
+        if (!templates.isEmpty()) {
+            return templates.get(0);
+        }
+
+        return templateService.create(new TemplateDtos.TemplateRequest(
+                "Template Padrão KB",
+                "md",
+                "Template padrão criado automaticamente para documentos aprovados pela IA."
         ));
     }
 
